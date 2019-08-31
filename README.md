@@ -27,7 +27,7 @@ In case you are curious, the test database includes a single table called `prope
 
 ### API
 
-The API you will be integrating with for this project consists of four endpoints:
+The API you will be integrating with for this project consists of three endpoints:
 
 * `/find?geojson={geojson}&distance={distance}`
 Finds properties within a radius *distance* in meters
