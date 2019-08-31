@@ -14,30 +14,6 @@ There are several different options for features you can implement in the applic
 
 Note that some features are more difficult than others, and you will be evaluated on more than just the number of features completed.  Quality is preferred over quantity.  Design, organize, and comment your code as you would a typical production project.  Be prepared to explain any decisions you made.
 
-## Setup
-### Development environment requirements
-
-You will need to install [Docker](https://www.docker.com/products/docker-desktop) and [`docker-compose`](https://docs.docker.com/compose/install/) to run the provided API service.
-
-### API and database startup
-From the root folder of this repo, run `docker-compose up -d` to start the API service and PostgreSQL database needed for this example.  The API service will be exposed on port **5080**.  The database server will be exposed on port **5555**.  If this port is not available on your computer, feel free to change the port in the `docker-compose.yml` file.
-
-In case you are curious, the test database includes a single table called `properties` (with 5 sample rows), each row representing a property or address.  There are three geography* fields and one field with an image URL pointing to an image on [Google Cloud Storage](https://cloud.google.com/storage/).
-
-
-### API
-
-The API you will be integrating with for this project consists of three endpoints:
-
-* `/find?geojson={geojson}&distance={distance}`
-Finds properties within a radius *distance* in meters
-
-* `/statistics?propertyId={propertyId}&distance={distance}`
-Finds statistics such as parcel area, buildings area, and buildings distances to center
-
-* `/display/{propertyId}[?overlay=[false|true]]`
-Displays the image of property *propertyId*, optionally overlaying parcel and building footprints
-
 ### Feature list
 (Note: Not all of these must be implemented - select the ones you think you can do in **4 hours**)
 
@@ -48,6 +24,108 @@ Displays the image of property *propertyId*, optionally overlaying parcel and bu
 * **Freestyle:** If you can think of any other useful features to develop, feel free to implement them.
 
 <sup>*</sup>By default, you may want to load the map with a very low zoom level, since our test database only has a few properties.
+
+
+## Setup
+### Development environment requirements
+
+You will need to install [Docker](https://www.docker.com/products/docker-desktop) and [`docker-compose`](https://docs.docker.com/compose/install/) to run the provided API service.
+
+### API and database startup
+From the root folder of this repo, run `docker-compose up -d` to start the API service and PostgreSQL database needed for this example.  The API service will be exposed on port **1235**.  The database server will be exposed on port **5555**.  If this port is not available on your computer, feel free to change the port in the `docker-compose.yml` file.
+
+In case you are curious, the test database includes a single table called `properties` (with 5 sample rows), each row representing a property or address.  There are three geography* fields and one field with an image URL pointing to an image on [Google Cloud Storage](https://cloud.google.com/storage/).
+
+
+### API reference
+
+The API you will be integrating with for this project consists of these endpoints:
+
+**GET /display/:*id*?(overlay=yes(&parcel=:*parcelColor*)(&building=:*buildingColor*))**
+
+*Fetches and displays property tile by ID. Optionally overlays parcel and building geometries on tile.*
+
+`example: GET localhost:1235/display/f853874999424ad2a5b6f37af6b56610?overlay=yes&building=green&parcel=orange`
+
+###### Request Parameters
+
+- "id" |
+description: Property ID |
+type: string |
+required: true |
+validation: length greater than 0
+
+- "overlay" |
+description: Overlays parcel and building geometries on tile |
+type: string |
+required: false |
+validation: enum("yes")
+
+- "parcel" |
+description: Indicated building overlay color |
+type: string |
+required: false |
+validation: enum(~<color>~) ex. "red", "green", "orange"
+
+- "building" |
+description: Indicates building overlay color |
+type: string |
+required: false |
+validation: enum(~<color>~) ex. "red", "green", "orange"
+
+###### Response
+
+JPEG image
+
+**POST /find**
+
+*Finds properties within X meters away from provided geojson point.*
+
+`example: POST localhost:1235/find`
+
+###### Request Body
+
+- geojson object with x-distance property
+
+```
+''    example:
+''
+''    {
+''     "type": "Feature",
+''      "geometry": {
+''        "type": "Point",
+''        "coordinates": [-80.0782213, 26.8849731]
+''      },
+''      "x-distance": 1755000
+''    }
+```
+
+###### Response
+
+JSON array of property IDs
+
+**GET /statistics/:*id*?distance=:*distance***
+
+*Returns various statistics for parcels and buildings found X meters around the requested property*
+
+`example: GET localhost:1235/statistics/f853874999424ad2a5b6f37af6b56610?distance=1755000`
+
+###### Request Parameters
+
+- "id" |
+description: Property ID |
+type: string |
+required: true |
+validation: length greater than 0
+
+- "distance" |
+description: Buffer distance |
+type: integer |
+required: true |
+validation: greater than 0
+
+###### Response
+
 
 ## Submission instructions
 
