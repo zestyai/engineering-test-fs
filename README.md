@@ -44,7 +44,7 @@ Displays the image of property *propertyId*, optionally overlaying parcel and bu
 * **Search:** Prompt the user for a longitude, latitude, and search radius (default 10000 meters) and display, in a tabular format, the results of the search, including the image of the property and its geographic location (longitude and latitude)
 * **Detail Page:** Show detailed information about a given property, including its image, geographic location, and statistics.
 * **Visual Search:** Using [Google Maps](https://developers.google.com/maps/documentation/), display a map based on the user's current location (or an address they enter), and display markers on the map for any property located on that map<sup>*</sup>.  Clicking on the marker should reveal an [Info Window](https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple) with key property information.
-* **Save for Later:** Allow users to save properties from the Search or Visual Search pages and visit their list of saved properties.
+* **Save for Later:** Allow users to save properties from the Search, Detail, or Visual Search pages and visit their list of saved properties.
 * **Freestyle:** If you can think of any other useful features to develop, feel free to implement them.
 
 <sup>*</sup>By default, you may want to load the map with a very low zoom level, since our test database only has a few properties.
