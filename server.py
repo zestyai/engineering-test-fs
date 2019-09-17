@@ -60,34 +60,36 @@ class find:
     def l11lllll1_opy_(self):
         data = geojson.loads(web.data())
         web.header(l11ll_opy_ (u"ࠪࡇࡴࡴࡴࡦࡰࡷ࠱࡙ࡿࡰࡦࠩࢄ"), l11ll_opy_ (u"ࠫࡦࡶࡰ࡭࡫ࡦࡥࡹ࡯࡯࡯࠱࡭ࡷࡴࡴࠧࢅ"))
-        l1l1lll1l_opy_(l11ll_opy_ (u"ࠧࠨࠢࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡆࡎࡈࡇ࡙ࠦࡩࡥࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࡇࡔࡒࡑࠥࡶࡲࡰࡲࡨࡶࡹ࡯ࡥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࡘࡊࡈࡖࡊࠦࡓࡕࡡࡇ࡭ࡸࡺࡡ࡯ࡥࡨࡣࡘࡶࡨࡦࡴࡨࠬ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰ࠼࠽࡫ࡪࡵ࡭ࡦࡶࡵࡽ࠱ࠦࡓࡕࡡࡐࡥࡰ࡫ࡐࡰ࡫ࡱࡸ࠭ࠫࡳ࠭ࠢࠨࡷ࠮࠯ࠠ࠽࠿ࠣࠩࡸࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠧࠨࠢࢆ"),
-                 [data.geometry.coordinates[0], data.geometry.coordinates[1], data[l11ll_opy_ (u"ࠨࡸ࠮ࡦ࡬ࡷࡹࡧ࡮ࡤࡧࠥࢇ")]])
-        return json.dumps([row[0] for row in cur.fetchall()])
+        web.header(l11ll_opy_ (u"ࠬࡇࡣࡤࡧࡶࡷ࠲ࡉ࡯࡯ࡶࡵࡳࡱ࠳ࡁ࡭࡮ࡲࡻ࠲ࡕࡲࡪࡩ࡬ࡲࠬࢆ"),l11ll_opy_ (u"࠭ࠪࠨࢇ"))
+        web.header(l11ll_opy_ (u"ࠧࡂࡥࡦࡩࡸࡹ࠭ࡄࡱࡱࡸࡷࡵ࡬࠮ࡃ࡯ࡰࡴࡽ࠭ࡎࡧࡷ࡬ࡴࡪࡳࠨ࢈"), l11ll_opy_ (u"ࠨࡒࡒࡗ࡙࠭ࢉ"))
+        l1l1lll1l_opy_(l11ll_opy_ (u"ࠤࠥࠦࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗࡊࡒࡅࡄࡖࠣ࡭ࡩ࠲ࠠࡔࡖࡢ࡜࠭࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱ࠽࠾࡬࡫࡯࡮ࡧࡷࡶࡾ࠯ࠠࡂࡕࠣࡰࡴࡴࡧࡪࡶࡸࡨࡪ࠲ࠠࡔࡖࡢ࡝࠭࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱ࠽࠾࡬࡫࡯࡮ࡧࡷࡶࡾ࠯ࠠࡂࡕࠣࡰࡦࡺࡩࡵࡷࡧࡩࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠏࠦࠠࠡࠢࠣࠤ࡛ࠥࠦࠠࠡࠢࠣࡍࡋࡒࡆࠢࡖࡘࡤࡊࡩࡴࡶࡤࡲࡨ࡫࡟ࡔࡲ࡫ࡩࡷ࡫ࠨࡨࡧࡲࡧࡴࡪࡥࡠࡩࡨࡳ࠿ࡀࡧࡦࡱࡰࡩࡹࡸࡹ࠭ࠢࡖࡘࡤࡓࡡ࡬ࡧࡓࡳ࡮ࡴࡴࠩࠧࡶ࠰ࠥࠫࡳࠪࠫࠣࡀࡂࠦࠥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠣࠤࠥࢊ"),
+                 [data.geometry.coordinates[0], data.geometry.coordinates[1], data[l11ll_opy_ (u"ࠥࡼ࠲ࡪࡩࡴࡶࡤࡲࡨ࡫ࠢࢋ")]])
+        return json.dumps([{l11ll_opy_ (u"ࠫࡵࡸ࡯ࡱࡧࡵࡸࡾࡏࡤࠨࢌ"):row[0],l11ll_opy_ (u"ࠬࡩ࡯ࡰࡴࡧ࡭ࡳࡧࡴࡦࡵࠪࢍ"):[row[1],row[2]]} for row in cur.fetchall()])
 class l1l1lllll_opy_:
     def l1l1ll1ll_opy_(self, id):
         data = web.input()
         l11lll11l_opy_ = 0
-        if l11ll_opy_ (u"ࠢࡥ࡫ࡶࡸࡦࡴࡣࡦࠤ࢈") in data and int(data[l11ll_opy_ (u"ࠣࡦ࡬ࡷࡹࡧ࡮ࡤࡧࠥࢉ")]) > 0:
-            l11lll11l_opy_ = data[l11ll_opy_ (u"ࠤࡧ࡭ࡸࡺࡡ࡯ࡥࡨࠦࢊ")]
-        l1l1lll1l_opy_(l11ll_opy_ (u"ࠥࠦࠧࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࡘࡋࡌࡆࡅࡗࠤࡘ࡛ࡍࠩࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡘࡤࡇࡲࡦࡣࠫࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡕࡡࡌࡲࡹ࡫ࡲࡴࡧࡦࡸ࡮ࡵ࡮ࠩࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡰࡢࡴࡦࡩࡱࡥࡧࡦࡱ࠯ࠤࡘ࡚࡟ࡃࡷࡩࡪࡪࡸࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙࠭ࡅࡍࡇࡆࡘࠥ࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠥ࡝ࡈࡆࡔࡈࠤ࡮ࡪࠠ࠾ࠢࠨࡷ࠮࠲ࠠࠦࡵࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠪࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࠮ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࠾ࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠥࠦࠧࢋ"),
+        if l11ll_opy_ (u"ࠨࡤࡪࡵࡷࡥࡳࡩࡥࠣࢎ") in data and int(data[l11ll_opy_ (u"ࠢࡥ࡫ࡶࡸࡦࡴࡣࡦࠤ࢏")]) > 0:
+            l11lll11l_opy_ = data[l11ll_opy_ (u"ࠣࡦ࡬ࡷࡹࡧ࡮ࡤࡧࠥ࢐")]
+        l1l1lll1l_opy_(l11ll_opy_ (u"ࠤࠥࠦࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗࡊࡒࡅࡄࡖࠣࡗ࡚ࡓࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࡕࡗࡣࡆࡸࡥࡢࠪࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡋࡱࡸࡪࡸࡳࡦࡥࡷ࡭ࡴࡴࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡶࡡࡳࡥࡨࡰࡤ࡭ࡥࡰ࠮ࠣࡗ࡙ࡥࡂࡶࡨࡩࡩࡷ࠮ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠬࡘࡋࡌࡆࡅࡗࠤ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰࠢࡉࡖࡔࡓࠠࡱࡴࡲࡴࡪࡸࡴࡪࡧࡶࠤ࡜ࡎࡅࡓࡇࠣ࡭ࡩࠦ࠽ࠡࠧࡶ࠭࠱ࠦࠥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣ࠭ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠠࡇࡔࡒࡑࠥࡶࡲࡰࡲࡨࡶࡹ࡯ࡥࡴ࠽ࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠤࠥࠦ࢑"),
                  [id, l11lll11l_opy_])
         l1l1l11ll_opy_ = cur.fetchone()[0]
-        l1l1lll1l_opy_(l11ll_opy_ (u"ࠦࠧࠨࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡅࡍࡇࡆࡘࠥࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡕࡡࡄࡶࡪࡧࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗ࡙ࡥࡉ࡯ࡶࡨࡶࡸ࡫ࡣࡵ࡫ࡲࡲ࠭ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡦࡺ࡯࡬ࡥ࡫ࡱ࡫ࡤ࡭ࡥࡰ࠮ࠣࡗ࡙ࡥࡂࡶࡨࡩࡩࡷ࠮ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠬࡘࡋࡌࡆࡅࡗࠤ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰࠢࡉࡖࡔࡓࠠࡱࡴࡲࡴࡪࡸࡴࡪࡧࡶࠤ࡜ࡎࡅࡓࡇࠣ࡭ࡩࠦ࠽ࠡࠧࡶ࠭࠱ࠦࠥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣ࠭ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡌࡒࡐࡏࠣࡴࡷࡵࡰࡦࡴࡷ࡭ࡪࡹ࠻ࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠢࠣࠤࢌ"),
+        l1l1lll1l_opy_(l11ll_opy_ (u"ࠥࠦࠧࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࡘࡋࡌࡆࡅࡗࠤࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡃࡵࡩࡦ࠮ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡘࡤࡏ࡮ࡵࡧࡵࡷࡪࡩࡴࡪࡱࡱࠬࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡥࡹ࡮ࡲࡤࡪࡰࡪࡣ࡬࡫࡯࠭ࠢࡖࡘࡤࡈࡵࡧࡨࡨࡶ࠭ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࡛ࠣࡍࡋࡒࡆࠢ࡬ࡨࠥࡃࠠࠦࡵࠬ࠰ࠥࠫࡳࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࠮ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࡋࡘࡏࡎࠢࡳࡶࡴࡶࡥࡳࡶ࡬ࡩࡸࡁࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠨࠢࠣ࢒"),
                  [id, l11lll11l_opy_])
         l11llllll_opy_ = [row[0] for row in cur.fetchall()]
-        l1l1lll1l_opy_(l11ll_opy_ (u"ࠧࠨࠢࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡆࡎࡈࡇ࡙ࠦࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࡔࡖࡢࡈ࡮ࡹࡴࡢࡰࡦࡩ࠭ࡨࡵࡪ࡮ࡧ࡭ࡳ࡭࡟ࡨࡧࡲ࠰ࠥ࠮ࡓࡆࡎࡈࡇ࡙ࠦࡧࡦࡱࡦࡳࡩ࡫࡟ࡨࡧࡲࠤࡋࡘࡏࡎࠢࡳࡶࡴࡶࡥࡳࡶ࡬ࡩࡸࠦࡗࡉࡇࡕࡉࠥ࡯ࡤࠡ࠿ࠣࠩࡸ࠯ࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡆࡓࡑࡐࠤࡵࡸ࡯ࡱࡧࡵࡸ࡮࡫ࡳ࠼ࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠣࠤࠥࢍ"),
+        l1l1lll1l_opy_(l11ll_opy_ (u"ࠦࠧࠨࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡅࡍࡇࡆࡘࠥࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡕࡡࡇ࡭ࡸࡺࡡ࡯ࡥࡨࠬࡧࡻࡩ࡭ࡦ࡬ࡲ࡬ࡥࡧࡦࡱ࠯ࠤ࡙࠭ࡅࡍࡇࡆࡘࠥ࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠥ࡝ࡈࡆࡔࡈࠤ࡮ࡪࠠ࠾ࠢࠨࡷ࠮࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡌࡒࡐࡏࠣࡴࡷࡵࡰࡦࡴࡷ࡭ࡪࡹ࠻ࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠢࠣࠤ࢓"),
                  [id])
         l1l111l1l_opy_ = [row[0] for row in cur.fetchall()]
-        l1l1lll1l_opy_(l11ll_opy_ (u"ࠨࠢࠣࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࡘࡋࡗࡌࠥࡾࠠࡂࡕࠣࠬࡘࡋࡌࡆࡅࡗࠤ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰࠢࡉࡖࡔࡓࠠࡱࡴࡲࡴࡪࡸࡴࡪࡧࡶࠤ࡜ࡎࡅࡓࡇࠣ࡭ࡩࠦ࠽ࠡࠧࡶ࠭ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗࡊࡒࡅࡄࡖࠣࠬࡘ࡛ࡍࠩࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡘࡤࡇࡲࡦࡣࠫࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡕࡡࡌࡲࡹ࡫ࡲࡴࡧࡦࡸ࡮ࡵ࡮ࠩࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡢࡶ࡫࡯ࡨ࡮ࡴࡧࡠࡩࡨࡳ࠱ࠦࡓࡕࡡࡅࡹ࡫࡬ࡥࡳࠪࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡸࠪ࠮ࠣࠩࡸࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣ࠭ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠪࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠬࠤ࠴ࠦࡓࡕࡡࡄࡶࡪࡧࠨࡔࡖࡢࡆࡺ࡬ࡦࡦࡴࠫࠬࡘࡋࡌࡆࡅࡗࠤ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰࠢࡉࡖࡔࡓࠠࡹࠫ࠯ࠤࠪࡹࠩࠪࠫࠣ࠮ࠥ࠷࠰࠱ࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠪࠢࡉࡖࡔࡓࠠࡱࡴࡲࡴࡪࡸࡴࡪࡧࡶ࠿ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠦࠧࠨࢎ"),
+        l1l1lll1l_opy_(l11ll_opy_ (u"ࠧࠨࠢࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡗࡊࡖࡋࠤࡽࠦࡁࡔࠢࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࡛ࠣࡍࡋࡒࡆࠢ࡬ࡨࠥࡃࠠࠦࡵࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡉࡑࡋࡃࡕࠢࠫࡗ࡚ࡓࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࡕࡗࡣࡆࡸࡥࡢࠪࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡋࡱࡸࡪࡸࡳࡦࡥࡷ࡭ࡴࡴࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡨࡵࡪ࡮ࡧ࡭ࡳ࡭࡟ࡨࡧࡲ࠰࡙ࠥࡔࡠࡄࡸࡪ࡫࡫ࡲࠩࠪࡖࡉࡑࡋࡃࡕࠢࡪࡩࡴࡩ࡯ࡥࡧࡢ࡫ࡪࡵࠠࡇࡔࡒࡑࠥࡾࠩ࠭ࠢࠨࡷࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠫࠣ࠳࡙ࠥࡔࡠࡃࡵࡩࡦ࠮ࡓࡕࡡࡅࡹ࡫࡬ࡥࡳࠪࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡸࠪ࠮ࠣࠩࡸ࠯ࠩࠪࠢ࠭ࠤ࠶࠶࠰ࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࠾ࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠥࠦࠧ࢔"),
                  [id, l11lll11l_opy_, l11lll11l_opy_])
         l11llll1l_opy_ = [row[0] for row in cur.fetchall()]
         return json.dumps({
-            l11ll_opy_ (u"ࠢࡱࡣࡵࡧࡪࡲࡁࡳࡧࡤࠦ࢏"): l1l1l11ll_opy_,
-            l11ll_opy_ (u"ࠣࡤࡸ࡭ࡱࡪࡩ࡯ࡩࡄࡶࡪࡧࡳࠣ࢐"): l11llllll_opy_,
-            l11ll_opy_ (u"ࠤࡥࡹࡱࡪࡩ࡯ࡩࡇ࡭ࡸࡺࡡ࡯ࡥࡨࡷࠧ࢑"): l1l111l1l_opy_,
-            l11ll_opy_ (u"ࠥࡾࡴࡴࡥࡠࡦࡨࡲࡸ࡯ࡴࡺࠤ࢒"): l11llll1l_opy_
+            l11ll_opy_ (u"ࠨࡰࡢࡴࡦࡩࡱࡇࡲࡦࡣࠥ࢕"): l1l1l11ll_opy_,
+            l11ll_opy_ (u"ࠢࡣࡷ࡬ࡰࡩ࡯࡮ࡨࡃࡵࡩࡦࡹࠢ࢖"): l11llllll_opy_,
+            l11ll_opy_ (u"ࠣࡤࡸࡰࡩ࡯࡮ࡨࡆ࡬ࡷࡹࡧ࡮ࡤࡧࡶࠦࢗ"): l1l111l1l_opy_,
+            l11ll_opy_ (u"ࠤࡽࡳࡳ࡫࡟ࡥࡧࡱࡷ࡮ࡺࡹࠣ࢘"): l11llll1l_opy_
         })
-# l1l1l111l_opy_ a l1l111ll1_opy_ (u"ࠫࡸࠦࡣࡰࡱࡵࡨ࡮ࡴࡡࡵࡧࡶࠤࡴࡴࠠࡵࡱࡳࠤࡴ࡬ࠠࡢࡰࠣ࡭ࡲࡧࡧࡦࠢࡪ࡭ࡻ࡫࡮ࠡ࡫ࡷࠫ࢓")s l1l111l11_opy_ l1l1l1lll_opy_ and with the l1ll1111l_opy_ l1ll1ll11_opy_
+# l1l1l111l_opy_ a l1l111ll1_opy_ (u"ࠪࡷࠥࡩ࡯ࡰࡴࡧ࡭ࡳࡧࡴࡦࡵࠣࡳࡳࠦࡴࡰࡲࠣࡳ࡫ࠦࡡ࡯ࠢ࡬ࡱࡦ࡭ࡥࠡࡩ࡬ࡺࡪࡴࠠࡪࡶ࢙ࠪ")s l1l111l11_opy_ l1l1l1lll_opy_ and with the l1ll1111l_opy_ l1ll1ll11_opy_
 def l1l1111ll_opy_(l1ll1l1ll_opy_, l11ll111l_opy_, geom, l1ll1ll11_opy_):
     l1l1lll11_opy_ = Image.open(l1ll1l1ll_opy_)
     l11ll11ll_opy_ = l1l1lll11_opy_.size[0] / (l11ll111l_opy_[2] - l11ll111l_opy_[0])
@@ -103,17 +105,17 @@ def l1l1111ll_opy_(l1ll1l1ll_opy_, l11ll111l_opy_, geom, l1ll1ll11_opy_):
     l1l11ll1l_opy_.l11lll1l1_opy_(zip(x, y), fill=l1ll1ll11_opy_)
     l1ll11l11_opy_ = Image.l11l1l1ll_opy_(l1l1lll11_opy_, l1ll11l1l_opy_, 0.5)
     l11lll111_opy_ = io.BytesIO()
-    l1ll11l11_opy_.l1l1l1111_opy_(l11lll111_opy_, format=l11ll_opy_ (u"ࠬࡐࡐࡆࡉࠪ࢔"))
+    l1ll11l11_opy_.l1l1l1111_opy_(l11lll111_opy_, format=l11ll_opy_ (u"ࠫࡏࡖࡅࡈ࢚ࠩ"))
     return l11lll111_opy_
 # l1l11llll_opy_ and l11l1l11l_opy_ l1ll1l1ll_opy_ from l11ll1ll1_opy_
 def l1l1l1l11_opy_(id):
-    l1l1lll1l_opy_(l11ll_opy_ (u"ࠨࠢࠣࡕࡈࡐࡊࡉࡔࠡ࡫ࡰࡥ࡬࡫࡟ࡶࡴ࡯ࠤࡋࡘࡏࡎࠢࡳࡶࡴࡶࡥࡳࡶ࡬ࡩࡸࠦࡗࡉࡇࡕࡉࠥ࡯ࡤࠡ࠿ࠣࠩࡸࠨࠢࠣ࢕"), [id])
+    l1l1lll1l_opy_(l11ll_opy_ (u"ࠧࠨࠢࡔࡇࡏࡉࡈ࡚ࠠࡪ࡯ࡤ࡫ࡪࡥࡵࡳ࡮ࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠥ࡝ࡈࡆࡔࡈࠤ࡮ࡪࠠ࠾ࠢࠨࡷࠧࠨ࢛ࠢ"), [id])
     l11l1llll_opy_ = cur.fetchone()
     if l11l1llll_opy_ is not None:
-        l1l1111l1_opy_ = l11ll_opy_ (u"ࠢࡴࡶࡲࡶࡦ࡭ࡥ࠰ࡥࡤࡧ࡭࡫࠯ࡪ࡯ࡤ࡫ࡪࡹ࠯ࠣ࢖") + id
+        l1l1111l1_opy_ = l11ll_opy_ (u"ࠨࡳࡵࡱࡵࡥ࡬࡫࠯ࡤࡣࡦ࡬ࡪ࠵ࡩ࡮ࡣࡪࡩࡸ࠵ࠢ࢜") + id
         l11lll1ll_opy_ = os.path.join(l1l1l1l1l_opy_, l1l1111l1_opy_)
         if os.path.exists(l11lll1ll_opy_):
-            l1l1ll1l1_opy_ = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠣࡴࠥࢗ"))
+            l1l1ll1l1_opy_ = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠢࡳࠤ࢝"))
             return l1l1ll1l1_opy_
         l11l1llll_opy_ = l11l1llll_opy_[0]
         l1ll1l1l1_opy_ = urllib2.urlopen(l11l1llll_opy_)
@@ -122,10 +124,10 @@ def l1l1l1l11_opy_(id):
             l1ll1llll_opy_ = io.BytesIO(l1l1l11l1_opy_)
             l1ll1l11l_opy_ = io.BytesIO()
             l1l11l1l1_opy_ = Image.open(l1ll1llll_opy_)
-            l1l11l1l1_opy_.l1l1l1111_opy_(l1ll1l11l_opy_, format=l11ll_opy_ (u"ࠩࡍࡔࡊࡍࠧ࢘"))
-            l1l1111l1_opy_ = l11ll_opy_ (u"ࠥࡷࡹࡵࡲࡢࡩࡨ࠳ࡨࡧࡣࡩࡧ࠲࡭ࡲࡧࡧࡦࡵ࠲࢙ࠦ") + id
+            l1l11l1l1_opy_.l1l1l1111_opy_(l1ll1l11l_opy_, format=l11ll_opy_ (u"ࠨࡌࡓࡉࡌ࠭࢞"))
+            l1l1111l1_opy_ = l11ll_opy_ (u"ࠤࡶࡸࡴࡸࡡࡨࡧ࠲ࡧࡦࡩࡨࡦ࠱࡬ࡱࡦ࡭ࡥࡴ࠱ࠥ࢟") + id
             l11lll1ll_opy_ = os.path.join(l1l1l1l1l_opy_, l1l1111l1_opy_)
-            l1l1ll1l1_opy_ = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠦࡼࠨ࢚"))
+            l1l1ll1l1_opy_ = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠥࡻࠧࢠ"))
             l1l1ll1l1_opy_.write(l1ll1l11l_opy_.getvalue())
             l1l1ll1l1_opy_.close()
             return l1ll1l11l_opy_
@@ -137,17 +139,17 @@ def l1l1lll1l_opy_(sql, args):
 def l1ll1l111_opy_():
     global cur
     if not cur:
-        conn = psycopg2.connect(host=l11ll_opy_ (u"ࠧࡶ࡯ࡴࡶࡪࡶࡪࡹࡱ࡭ࠤ࢛"), port=l11ll_opy_ (u"ࠨ࠵࠵࠵࠵ࠦ࢜"), database=l11ll_opy_ (u"ࠢࡻࡧࡶࡸࡾࠨ࢝"), user=l11ll_opy_ (u"ࠣࡲࡲࡷࡹ࡭ࡲࡦࡵࠥ࢞"),
-                                password=l11ll_opy_ (u"ࠤࡨࡲ࡬࡯࡮ࡦࡖࡨࡷࡹ࠾࠸࠹ࠤ࢟"))
+        conn = psycopg2.connect(host=l11ll_opy_ (u"ࠦࡵࡵࡳࡵࡩࡵࡩࡸࡷ࡬ࠣࢡ"), port=l11ll_opy_ (u"ࠧ࠻࠴࠴࠴ࠥࢢ"), database=l11ll_opy_ (u"ࠨࡺࡦࡵࡷࡽࠧࢣ"), user=l11ll_opy_ (u"ࠢࡱࡱࡶࡸ࡬ࡸࡥࡴࠤࢤ"),
+                                password=l11ll_opy_ (u"ࠣࡧࡱ࡫࡮ࡴࡥࡕࡧࡶࡸ࠽࠾࠸ࠣࢥ"))
         cur = conn.cursor()
     return cur
 # l1l11llll_opy_ and l1l1l1ll1_opy_ the 404 l1ll1l1ll_opy_ from l1l11l111_opy_ (l11llll11_opy_: l1l11lll1_opy_ as redirect l1l111111_opy_)
 def l1l11111l_opy_():
-    l1l1111l1_opy_ = l11ll_opy_ (u"ࠥࡷࡹࡵࡲࡢࡩࡨ࠳ࡳࡵࡴ࠮ࡨࡲࡹࡳࡪ࠮࡫ࡲࡪࠦࢠ")
+    l1l1111l1_opy_ = l11ll_opy_ (u"ࠤࡶࡸࡴࡸࡡࡨࡧ࠲ࡲࡴࡺ࠭ࡧࡱࡸࡲࡩ࠴ࡪࡱࡩࠥࢦ")
     l11lll1ll_opy_ = os.path.join(l1l1l1l1l_opy_, l1l1111l1_opy_)
-    fp = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠫࡷ࠱ࠧࢡ"));
+    fp = open(l11lll1ll_opy_, l11ll_opy_ (u"ࠪࡶ࠰࠭ࢧ"));
     return fp
 # l1l1llll1_opy_ the l11ll1111_opy_
-if __name__ == l11ll_opy_ (u"ࠧࡥ࡟࡮ࡣ࡬ࡲࡤࡥࠢࢢ"):
+if __name__ == l11ll_opy_ (u"ࠦࡤࡥ࡭ࡢ࡫ࡱࡣࡤࠨࢨ"):
     app = web.application(l1l11ll11_opy_, globals())
     app.run()
