@@ -1,155 +1,299 @@
-# coding: UTF-8
-import sys
-l11111ll_opy_ = sys.version_info [0] == 2
-l1l1ll11_opy_ = 2048
-l111lll1_opy_ = 7
-def l11ll_opy_ (l11111_opy_):
-    global l1l1llll_opy_
-    l1l111ll_opy_ = ord (l11111_opy_ [-1])
-    l1111l1l_opy_ = l11111_opy_ [:-1]
-    l1llll11_opy_ = l1l111ll_opy_ % len (l1111l1l_opy_)
-    l1ll1ll_opy_ = l1111l1l_opy_ [:l1llll11_opy_] + l1111l1l_opy_ [l1llll11_opy_:]
-    if l11111ll_opy_:
-        l1ll11_opy_ = unicode () .join ([unichr (ord (char) - l1l1ll11_opy_ - (l1l11_opy_ + l1l111ll_opy_) % l111lll1_opy_) for l1l11_opy_, char in enumerate (l1ll1ll_opy_)])
-    else:
-        l1ll11_opy_ = str () .join ([chr (ord (char) - l1l1ll11_opy_ - (l1l11_opy_ + l1l111ll_opy_) % l111lll1_opy_) for l1l11_opy_, char in enumerate (l1ll1ll_opy_)])
-    return eval (l1ll11_opy_)
-import web
-import psycopg2
-import urllib2
-from PIL import Image
 import io
-import os
 import json
+import os
+import urllib2
+
 import geojson
-from PIL import ImageDraw
+import psycopg2
+import web
+from PIL import Image, ImageDraw
 from shapely import wkb
-# l1l1l111l_opy_ l11lll1ll_opy_ l11ll1lll_opy_
-l1l1l11ll_opy_ = (
-    l11ll_opy_ (u"࠭࠯ࡴࡶࡤࡸ࡮ࡹࡴࡪࡥࡶ࠳࠭࠴ࠪࠪࠩࡲ"), l11ll_opy_ (u"ࠧࡴࡶࡤࡸ࡮ࡹࡴࡪࡥࡶࠫࡳ"),
-    l11ll_opy_ (u"ࠨ࠱ࡧ࡭ࡸࡶ࡬ࡢࡻ࠲ࠬ࠳࠰ࠩࠨࡴ"), l11ll_opy_ (u"ࠩࡧ࡭ࡸࡶ࡬ࡢࡻࠪࡵ"),
-    l11ll_opy_ (u"ࠪ࠳࡫࡯࡮ࡥࠩࡶ"), l11ll_opy_ (u"ࠫ࡫࡯࡮ࡥࠩࡷ")
+
+# Setup API routes
+urls = (
+    '/statistics/(.*)', 'Statistics',
+    '/display/(.*)', 'Display',
+    '/find', 'Find'
 )
-# l1ll1111l_opy_ cursor (l1ll1l11l_opy_ l11llllll_opy_)
-cur = False
-# l1ll111l1_opy_ the absolute path name
-l1l1lll11_opy_ = os.path.dirname(__file__)
-class display:
+
+# Database connection and cursor (initialized later)
+conn = None
+cur = None
+
+# Get the absolute path name
+script_dir = os.path.dirname(__file__)
+
+
+class Display:
+    def __init__(self):
+        pass
+
     def GET(self, id):
+        # Read query parameters
         data = web.input()
-        web.header(l11ll_opy_ (u"ࠬࡉ࡯࡯ࡶࡨࡲࡹ࠳ࡔࡺࡲࡨࠫࡸ"), l11ll_opy_ (u"࠭ࡩ࡮ࡣࡪࡩ࠴ࡰࡰࡦࡩࠪࡹ"))
-        image = l1l1ll1ll_opy_(id)
+
+        # Since this endpoint returns image/jpeg, let's set the right header
+        web.header('Content-Type', 'image/jpeg')
+        web.header('Access-Control-Allow-Origin', '*')
+        web.header('Access-Control-Allow-Methods', 'GET')
+
+        # Fetch image from DB or cache, if exists
+        image = fetch_image(id)
         if image is not False:
-            if l11ll_opy_ (u"ࠢࡰࡸࡨࡶࡱࡧࡹࠣࡺ") in data and data[l11ll_opy_ (u"ࠣࡱࡹࡩࡷࡲࡡࡺࠤࡻ")] == l11ll_opy_ (u"ࠤࡼࡩࡸࠨࡼ"):
-                l1ll11l11_opy_(l11ll_opy_ (u"ࠥࡗࡊࡒࡅࡄࡖࠣࡴࡦࡸࡣࡦ࡮ࡢ࡫ࡪࡵࠬࠡࡤࡸ࡭ࡱࡪࡩ࡯ࡩࡢ࡫ࡪࡵࠬࠡ࡫ࡰࡥ࡬࡫࡟ࡣࡱࡸࡲࡩࡹࠠࡇࡔࡒࡑࠥࡶࡲࡰࡲࡨࡶࡹ࡯ࡥࡴ࡚ࠢࡌࡊࡘࡅࠡ࡫ࡧࠤࡂࠦࠥࡴࠤࡽ"), [id])
+            # Do we want to overlay the parcel and building polygons?
+            if 'overlay' in data and data['overlay'] == 'yes':
+                # Fetch geometries and image boundaries
+                query_db("SELECT parcel_geo, building_geo, image_bounds FROM properties WHERE id = %s", [id])
+                # Assumes ID exists, if image exists
                 row = cur.fetchone()
-                l1ll1l111_opy_ = l11ll_opy_ (u"ࠦࡴࡸࡡ࡯ࡩࡨࠦࡾ")
-                l11lll11l_opy_ = l11ll_opy_ (u"ࠧ࡭ࡲࡦࡧࡱࠦࡿ")
-                if l11ll_opy_ (u"ࠨࡰࡢࡴࡦࡩࡱࠨࢀ") in data:
-                    l1ll1l111_opy_ = data[l11ll_opy_ (u"ࠢࡱࡣࡵࡧࡪࡲࠢࢁ")]
-                if l11ll_opy_ (u"ࠣࡤࡸ࡭ࡱࡪࡩ࡯ࡩࠥࢂ") in data:
-                    l11lll11l_opy_ = data[l11ll_opy_ (u"ࠤࡥࡹ࡮ࡲࡤࡪࡰࡪࠦࢃ")]
+
+                # Set default colors, but also accepts custom colors from query parameters
+                parcel_color = 'orange'
+                building_color = 'green'
+                if 'parcel' in data:
+                    parcel_color = data['parcel']
+                if 'building' in data:
+                    building_color = data['building']
+
+                # Plot polygons on image (use shapely to parse wkb)
                 geom = wkb.loads(row[0], hex=True)
-                l1ll1llll_opy_ = l1l11l1ll_opy_(image, row[2], geom, l1ll1l111_opy_)
+                image_plotted = geom_plotter(image, row[2], geom, parcel_color)
                 geom = wkb.loads(row[1], hex=True)
-                l1ll1llll_opy_ = l1l11l1ll_opy_(l1ll1llll_opy_, row[2], geom, l11lll11l_opy_)
-                return l1ll1llll_opy_.getvalue()
+                image_plotted = geom_plotter(image_plotted, row[2], geom, building_color)
+
+                # Return final image
+                return image_plotted.getvalue()
+
+            # Return image without polygon overlays if overlay was not requested
             return image
-        return l1l11l11l_opy_()
-class find:
+
+        # If ID not found then return a 404 image (TODO: do as redirect instead)
+        return not_found_image()
+
+
+class Find:
+    def __init__(self):
+        pass
+
     def POST(self):
+        # Read POST body as JSON (TODO: validate Content-Type is correct first)
         data = geojson.loads(web.data())
-        web.header(l11ll_opy_ (u"ࠪࡇࡴࡴࡴࡦࡰࡷ࠱࡙ࡿࡰࡦࠩࢄ"), l11ll_opy_ (u"ࠫࡦࡶࡰ࡭࡫ࡦࡥࡹ࡯࡯࡯࠱࡭ࡷࡴࡴࠧࢅ"))
-        web.header(l11ll_opy_ (u"ࠬࡇࡣࡤࡧࡶࡷ࠲ࡉ࡯࡯ࡶࡵࡳࡱ࠳ࡁ࡭࡮ࡲࡻ࠲ࡕࡲࡪࡩ࡬ࡲࠬࢆ"),l11ll_opy_ (u"࠭ࠪࠨࢇ"))
-        web.header(l11ll_opy_ (u"ࠧࡂࡥࡦࡩࡸࡹ࠭ࡄࡱࡱࡸࡷࡵ࡬࠮ࡃ࡯ࡰࡴࡽ࠭ࡎࡧࡷ࡬ࡴࡪࡳࠨ࢈"), l11ll_opy_ (u"ࠨࡒࡒࡗ࡙࠭ࢉ"))
-        l1ll11l11_opy_(l11ll_opy_ (u"ࠤࠥࠦࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗࡊࡒࡅࡄࡖࠣ࡭ࡩ࠲ࠠࡔࡖࡢ࡜࠭࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱ࠽࠾࡬࡫࡯࡮ࡧࡷࡶࡾ࠯ࠠࡂࡕࠣࡰࡴࡴࡧࡪࡶࡸࡨࡪ࠲ࠠࡔࡖࡢ࡝࠭࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱ࠽࠾࡬࡫࡯࡮ࡧࡷࡶࡾ࠯ࠠࡂࡕࠣࡰࡦࡺࡩࡵࡷࡧࡩࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠏࠦࠠࠡࠢࠣࠤ࡛ࠥࠦࠠࠡࠢࠣࡍࡋࡒࡆࠢࡖࡘࡤࡊࡩࡴࡶࡤࡲࡨ࡫࡟ࡔࡲ࡫ࡩࡷ࡫ࠨࡨࡧࡲࡧࡴࡪࡥࡠࡩࡨࡳ࠿ࡀࡧࡦࡱࡰࡩࡹࡸࡹ࠭ࠢࡖࡘࡤࡓࡡ࡬ࡧࡓࡳ࡮ࡴࡴࠩࠧࡶ࠰ࠥࠫࡳࠪࠫࠣࡀࡂࠦࠥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠣࠤࠥࢊ"),
-                 [data.geometry.coordinates[0], data.geometry.coordinates[1], data[l11ll_opy_ (u"ࠥࡼ࠲ࡪࡩࡴࡶࡤࡲࡨ࡫ࠢࢋ")]])
-        return json.dumps([{l11ll_opy_ (u"ࠫࡵࡸ࡯ࡱࡧࡵࡸࡾࡏࡤࠨࢌ"):row[0],l11ll_opy_ (u"ࠬࡩ࡯ࡰࡴࡧ࡭ࡳࡧࡴࡦࡵࠪࢍ"):[row[1],row[2]]} for row in cur.fetchall()])
-class statistics:
+
+        # Since this endpoint returns application/json, let's set the right header
+        web.header('Content-Type', 'application/json')
+        web.header('Access-Control-Allow-Origin', '*')
+        web.header('Access-Control-Allow-Methods', 'POST')
+
+        # Fetch all properties within distance specified from point specified
+        query_db("""
+            SELECT id, ST_X(geocode_geo::geometry) AS longitude, ST_Y(geocode_geo::geometry) AS latitude
+            FROM properties
+            WHERE ST_Distance_Sphere(geocode_geo::geometry, ST_MakePoint(%s, %s)) <= %s
+            """,
+                 [data.geometry.coordinates[0], data.geometry.coordinates[1], data["x-distance"]])
+
+        return json.dumps([{'propertyId': row[0], 'coordinates': [row[1], row[2]]} for row in cur.fetchall()])
+
+
+class Statistics:
+    def __init__(self):
+        pass
+
     def GET(self, id):
+        # Read query parameters
         data = web.input()
+
+        web.header('Content-Type', 'application/json')
+        web.header('Access-Control-Allow-Origin', '*')
+        web.header('Access-Control-Allow-Methods', 'GET')
+
         distance = 0
-        if l11ll_opy_ (u"ࠨࡤࡪࡵࡷࡥࡳࡩࡥࠣࢎ") in data and int(data[l11ll_opy_ (u"ࠢࡥ࡫ࡶࡸࡦࡴࡣࡦࠤ࢏")]) > 0:
-            distance = data[l11ll_opy_ (u"ࠣࡦ࡬ࡷࡹࡧ࡮ࡤࡧࠥ࢐")]
-        l1ll11l11_opy_(l11ll_opy_ (u"ࠤࠥࠦࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࡗࡊࡒࡅࡄࡖࠣࡗ࡚ࡓࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࡕࡗࡣࡆࡸࡥࡢࠪࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡋࡱࡸࡪࡸࡳࡦࡥࡷ࡭ࡴࡴࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡶࡡࡳࡥࡨࡰࡤ࡭ࡥࡰ࠮ࠣࡗ࡙ࡥࡂࡶࡨࡩࡩࡷ࠮ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠬࡘࡋࡌࡆࡅࡗࠤ࡬࡫࡯ࡤࡱࡧࡩࡤ࡭ࡥࡰࠢࡉࡖࡔࡓࠠࡱࡴࡲࡴࡪࡸࡴࡪࡧࡶࠤ࡜ࡎࡅࡓࡇࠣ࡭ࡩࠦ࠽ࠡࠧࡶ࠭࠱ࠦࠥࡴࠌࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣ࠭ࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠠࡇࡔࡒࡑࠥࡶࡲࡰࡲࡨࡶࡹ࡯ࡥࡴ࠽ࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠤࠥࠦ࢑"),
+        if 'distance' in data and int(data['distance']) > 0:
+            distance = data['distance']
+
+        # Fetch total parcel area
+        query_db("""
+            SELECT SUM(
+              ST_Area(
+                ST_Intersection(
+                  parcel_geo, ST_Buffer(
+                        (SELECT geocode_geo FROM properties WHERE id = %s), %s
+                  )
+                )
+              )
+            ) FROM properties;
+            """,
                  [id, distance])
-        l1l1ll1l1_opy_ = cur.fetchone()[0]
-        l1ll11l11_opy_(l11ll_opy_ (u"ࠥࠦࠧࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࡘࡋࡌࡆࡅࡗࠤࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡃࡵࡩࡦ࠮ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡘࡤࡏ࡮ࡵࡧࡵࡷࡪࡩࡴࡪࡱࡱࠬࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡥࡹ࡮ࡲࡤࡪࡰࡪࡣ࡬࡫࡯࠭ࠢࡖࡘࡤࡈࡵࡧࡨࡨࡶ࠭ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࡛ࠣࡍࡋࡒࡆࠢ࡬ࡨࠥࡃࠠࠦࡵࠬ࠰ࠥࠫࡳࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥ࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࠮ࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࡋࡘࡏࡎࠢࡳࡶࡴࡶࡥࡳࡶ࡬ࡩࡸࡁࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠨࠢࠣ࢒"),
+
+        parcel_area = cur.fetchone()[0]
+
+        # Fetch building areas
+        query_db("""
+            SELECT 
+              ST_Area(
+                ST_Intersection(
+                  building_geo, ST_Buffer(
+                        (SELECT geocode_geo FROM properties WHERE id = %s), %s
+                  )
+                )
+              )
+            FROM properties;
+            """,
                  [id, distance])
-        l1l1ll11l_opy_ = [row[0] for row in cur.fetchall()]
-        l1ll11l11_opy_(l11ll_opy_ (u"ࠦࠧࠨࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡅࡍࡇࡆࡘࠥࠐࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡓࡕࡡࡇ࡭ࡸࡺࡡ࡯ࡥࡨࠬࡧࡻࡩ࡭ࡦ࡬ࡲ࡬ࡥࡧࡦࡱ࠯ࠤ࡙࠭ࡅࡍࡇࡆࡘࠥ࡭ࡥࡰࡥࡲࡨࡪࡥࡧࡦࡱࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠥ࡝ࡈࡆࡔࡈࠤ࡮ࡪࠠ࠾ࠢࠨࡷ࠮࠯ࠊࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡌࡒࡐࡏࠣࡴࡷࡵࡰࡦࡴࡷ࡭ࡪࡹ࠻ࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠢࠣࠤ࢓"),
+
+        building_areas = [row[0] for row in cur.fetchall()]
+
+        # Fetch building distances to center
+        query_db("""
+            SELECT 
+              ST_Distance(building_geo, (SELECT geocode_geo FROM properties WHERE id = %s))
+            FROM properties;
+            """,
                  [id])
-        l1l11ll1l_opy_ = [row[0] for row in cur.fetchall()]
-        l1ll11l11_opy_(l11ll_opy_ (u"ࠧࠨࠢࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࡗࡊࡖࡋࠤࡽࠦࡁࡔࠢࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࡛ࠣࡍࡋࡒࡆࠢ࡬ࡨࠥࡃࠠࠦࡵࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࡖࡉࡑࡋࡃࡕࠢࠫࡗ࡚ࡓࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࡕࡗࡣࡆࡸࡥࡢࠪࠍࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤ࡙ࠥࡔࡠࡋࡱࡸࡪࡸࡳࡦࡥࡷ࡭ࡴࡴࠨࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࡨࡵࡪ࡮ࡧ࡭ࡳ࡭࡟ࡨࡧࡲ࠰࡙ࠥࡔࡠࡄࡸࡪ࡫࡫ࡲࠩࠪࡖࡉࡑࡋࡃࡕࠢࡪࡩࡴࡩ࡯ࡥࡧࡢ࡫ࡪࡵࠠࡇࡔࡒࡑࠥࡾࠩ࠭ࠢࠨࡷࠏࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠬࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠫࠣ࠳࡙ࠥࡔࡠࡃࡵࡩࡦ࠮ࡓࡕࡡࡅࡹ࡫࡬ࡥࡳࠪࠫࡗࡊࡒࡅࡄࡖࠣ࡫ࡪࡵࡣࡰࡦࡨࡣ࡬࡫࡯ࠡࡈࡕࡓࡒࠦࡸࠪ࠮ࠣࠩࡸ࠯ࠩࠪࠢ࠭ࠤ࠶࠶࠰ࠋࠢࠣࠤࠥࠦࠠࠡࠢࠣࠤࠥࠦࠩࠡࡈࡕࡓࡒࠦࡰࡳࡱࡳࡩࡷࡺࡩࡦࡵ࠾ࠎࠥࠦࠠࠡࠢࠣࠤࠥࠦࠠࠡࠢࠥࠦࠧ࢔"),
+
+        building_distances = [row[0] for row in cur.fetchall()]
+
+        query_db("""
+            WITH x AS (SELECT geocode_geo FROM properties WHERE id = %s)
+            SELECT (SUM(
+              ST_Area(
+                ST_Intersection(
+                  building_geo, ST_Buffer((SELECT geocode_geo FROM x), %s
+                  )
+                )
+              ) / ST_Area(ST_Buffer((SELECT geocode_geo FROM x), %s))) * 100
+            ) FROM properties;
+            """,
                  [id, distance, distance])
-        l1l111ll1_opy_ = [row[0] for row in cur.fetchall()]
+
+        zone_density = [row[0] for row in cur.fetchall()]
+
+        # Build and return final structure
         return json.dumps({
-            l11ll_opy_ (u"ࠨࡰࡢࡴࡦࡩࡱࡇࡲࡦࡣࠥ࢕"): l1l1ll1l1_opy_,
-            l11ll_opy_ (u"ࠢࡣࡷ࡬ࡰࡩ࡯࡮ࡨࡃࡵࡩࡦࡹࠢ࢖"): l1l1ll11l_opy_,
-            l11ll_opy_ (u"ࠣࡤࡸࡰࡩ࡯࡮ࡨࡆ࡬ࡷࡹࡧ࡮ࡤࡧࡶࠦࢗ"): l1l11ll1l_opy_,
-            l11ll_opy_ (u"ࠤࡽࡳࡳ࡫࡟ࡥࡧࡱࡷ࡮ࡺࡹࠣ࢘"): l1l111ll1_opy_
+            'parcel_area_sqm': parcel_area,
+            'building_area_sqm': building_areas,
+            'building_distances_m': building_distances,
+            'zone_density': zone_density
         })
-# l1l1l1lll_opy_ a l1l11llll_opy_ (u"ࠪࡷࠥࡩ࡯ࡰࡴࡧ࡭ࡳࡧࡴࡦࡵࠣࡳࡳࠦࡴࡰࡲࠣࡳ࡫ࠦࡡ࡯ࠢ࡬ࡱࡦ࡭ࡥࠡࡩ࡬ࡺࡪࡴࠠࡪࡶ࢙ࠪ")s l1l11ll11_opy_ l1l1llll1_opy_ and with the l1ll11lll_opy_ color
-def l1l11l1ll_opy_(image, l11llll11_opy_, geom, color):
-    l1ll111ll_opy_ = Image.open(image)
-    l11lllll1_opy_ = l1ll111ll_opy_.size[0] / (l11llll11_opy_[2] - l11llll11_opy_[0])
-    l11llll1l_opy_ = l1ll111ll_opy_.size[1] / (l11llll11_opy_[3] - l11llll11_opy_[1])
+
+
+# Plots a geometry's coordinates on top of an image given it's coordinate boundaries and with the provided color
+def geom_plotter(image, image_bounds, geom, color):
+    # Open image as Image
+    img = Image.open(image)
+
+    # Generate image pixels to coordinate bounds ratios
+    mul_x = img.size[0] / (image_bounds[2] - image_bounds[0])
+    mul_y = img.size[1] / (image_bounds[3] - image_bounds[1])
+
+    # Convert coordinates to pixels
     x = []
-    for l1l1lllll_opy_ in geom.exterior.xy[0]:
-        x.append((l1l1lllll_opy_ - l11llll11_opy_[0]) * l11lllll1_opy_)
+    for val_x in geom.exterior.xy[0]:
+        x.append((val_x - image_bounds[0]) * mul_x)
     y = []
-    for l1ll11111_opy_ in geom.exterior.xy[1]:
-        y.append((l11llll11_opy_[3] - l1ll11111_opy_) * l11llll1l_opy_)
-    l1ll1l1ll_opy_ = l1ll111ll_opy_.copy()
-    draw = ImageDraw.Draw(l1ll1l1ll_opy_)
+    for val_y in geom.exterior.xy[1]:
+        y.append((image_bounds[3] - val_y) * mul_y)
+
+    # ???
+    img2 = img.copy()
+    draw = ImageDraw.Draw(img2)
+
+    # Draw polygon
     draw.polygon(zip(x, y), fill=color)
-    l1ll1l1l1_opy_ = Image.blend(l1ll111ll_opy_, l1ll1l1ll_opy_, 0.5)
-    l1l1111ll_opy_ = io.BytesIO()
-    l1ll1l1l1_opy_.save(l1l1111ll_opy_, format=l11ll_opy_ (u"ࠫࡏࡖࡅࡈ࢚ࠩ"))
-    return l1l1111ll_opy_
-# l1l1l1ll1_opy_ and l11ll1ll1_opy_ image from l1l11111l_opy_
-def l1l1ll1ll_opy_(id):
-    l1ll11l11_opy_(l11ll_opy_ (u"ࠧࠨࠢࡔࡇࡏࡉࡈ࡚ࠠࡪ࡯ࡤ࡫ࡪࡥࡵࡳ࡮ࠣࡊࡗࡕࡍࠡࡲࡵࡳࡵ࡫ࡲࡵ࡫ࡨࡷࠥ࡝ࡈࡆࡔࡈࠤ࡮ࡪࠠ࠾ࠢࠨࡷࠧࠨ࢛ࠢ"), [id])
-    l11lll1l1_opy_ = cur.fetchone()
-    if l11lll1l1_opy_ is not None:
-        l1l11l1l1_opy_ = l11ll_opy_ (u"ࠨࡳࡵࡱࡵࡥ࡬࡫࠯ࡤࡣࡦ࡬ࡪ࠵ࡩ࡮ࡣࡪࡩࡸ࠵ࠢ࢜") + id
-        l1l111l11_opy_ = os.path.join(l1l1lll11_opy_, l1l11l1l1_opy_)
-        if os.path.exists(l1l111l11_opy_):
-            l1l111lll_opy_ = open(l1l111l11_opy_, l11ll_opy_ (u"ࠢࡳࠤ࢝"))
-            return l1l111lll_opy_
-        l11lll1l1_opy_ = l11lll1l1_opy_[0]
-        l1l1l1l11_opy_ = urllib2.urlopen(l11lll1l1_opy_)
-        if l1l1l1l11_opy_.getcode() == 200:
-            l1l1ll111_opy_ = l1l1l1l11_opy_.read()
-            l1l11lll1_opy_ = io.BytesIO(l1l1ll111_opy_)
-            l1ll1lll1_opy_ = io.BytesIO()
-            l1l1l11l1_opy_ = Image.open(l1l11lll1_opy_)
-            l1l1l11l1_opy_.save(l1ll1lll1_opy_, format=l11ll_opy_ (u"ࠨࡌࡓࡉࡌ࠭࢞"))
-            l1l11l1l1_opy_ = l11ll_opy_ (u"ࠤࡶࡸࡴࡸࡡࡨࡧ࠲ࡧࡦࡩࡨࡦ࠱࡬ࡱࡦ࡭ࡥࡴ࠱ࠥ࢟") + id
-            l1l111l11_opy_ = os.path.join(l1l1lll11_opy_, l1l11l1l1_opy_)
-            l1l111lll_opy_ = open(l1l111l11_opy_, l11ll_opy_ (u"ࠥࡻࠧࢠ"))
-            l1l111lll_opy_.write(l1ll1lll1_opy_.getvalue())
-            l1l111lll_opy_.close()
-            return l1ll1lll1_opy_
+
+    # Merge images
+    img3 = Image.blend(img, img2, 0.5)
+
+    # Convert Image to bytes
+    img3_bytes = io.BytesIO()
+    img3.save(img3_bytes, format='JPEG')
+
+    return img3_bytes
+
+
+# Retrieves and caches image from remote
+def fetch_image(id):
+    # Fetch image_url using provided ID from database
+    query_db("""SELECT image_url FROM properties WHERE id = %s""", [id])
+    image_url = cur.fetchone()
+
+    # If there's are row found
+    if image_url is not None:
+        # First check if image is cached locally in the filesystem and return it
+        rel_path = 'storage/cache/images/' + id
+        abs_file_path = os.path.join(script_dir, rel_path)
+        if os.path.exists(abs_file_path):
+            image_cache = open(abs_file_path, "r")
+            return image_cache
+
+        # If image not cached then fetch it from the remote
+        image_url = image_url[0]
+        image_resp = urllib2.urlopen(image_url)
+        # If image found in remote
+        if image_resp.getcode() == 200:
+            # Read tiff file and convert it to jpeg
+            image_bin = image_resp.read()
+            image_tiff = io.BytesIO(image_bin)
+            image_jpg = io.BytesIO()
+            pil_image = Image.open(image_tiff)
+            pil_image.save(image_jpg, format='JPEG')
+
+            # Cache jpeg file in case it's requested again
+            rel_path = 'storage/cache/images/' + id
+            abs_file_path = os.path.join(script_dir, rel_path)
+            image_cache = open(abs_file_path, "w")
+            image_cache.write(image_jpg.getvalue())
+            image_cache.close()
+
+            image_cache = open(abs_file_path, "r")
+            return image_cache
+
+    # If ID not found in database table, or remote url not found, then return false
     return False
-# l1l111111_opy_ method for running l11lll111_opy_ (l1l111l1l_opy_: add exception l1l1111l1_opy_)
-def l1ll11l11_opy_(sql, args):
-    return l1ll1ll1l_opy_().execute(sql, args);
-# l1ll11ll1_opy_ load database connection
-def l1ll1ll1l_opy_():
-    global cur
+
+
+# Helper method for running queries (TODO: add exception handling)
+def query_db(sql, args):
+    cur = cursor_db()
+
+    cur.execute(sql, args)
+
+
+# Lazy load database connection
+def cursor_db():
+    global cur, conn
     if not cur:
-        conn = psycopg2.connect(host=l11ll_opy_ (u"ࠦࡵࡵࡳࡵࡩࡵࡩࡸࡷ࡬ࠣࢡ"), port=l11ll_opy_ (u"ࠧ࠻࠴࠴࠴ࠥࢢ"), database=l11ll_opy_ (u"ࠨࡺࡦࡵࡷࡽࠧࢣ"), user=l11ll_opy_ (u"ࠢࡱࡱࡶࡸ࡬ࡸࡥࡴࠤࢤ"),
-                                password=l11ll_opy_ (u"ࠣࡧࡱ࡫࡮ࡴࡥࡕࡧࡶࡸ࠽࠾࠸ࠣࢥ"))
+        # Establish database connection (TODO: read from environment, so that it can be set by docker-compose)
+        conn = psycopg2.connect(host="postgresql", port="5432", database="zesty", user="postgres",
+                                password="engineTest888")
+        conn.autocommit = True
+
         cur = conn.cursor()
+
     return cur
-# l1l1l1ll1_opy_ and l1l1lll1l_opy_ the 404 image from l1l1l1111_opy_ (l1l111l1l_opy_: l1l1l1l1l_opy_ as redirect l1l11l111_opy_)
-def l1l11l11l_opy_():
-    l1l11l1l1_opy_ = l11ll_opy_ (u"ࠤࡶࡸࡴࡸࡡࡨࡧ࠲ࡲࡴࡺ࠭ࡧࡱࡸࡲࡩ࠴ࡪࡱࡩࠥࢦ")
-    l1l111l11_opy_ = os.path.join(l1l1lll11_opy_, l1l11l1l1_opy_)
-    fp = open(l1l111l11_opy_, l11ll_opy_ (u"ࠪࡶ࠰࠭ࢧ"));
+
+
+def close_db():
+    global conn, cur
+    if cur:
+        cur = None
+    if conn:
+        conn.rollback()
+        conn.close()
+        conn = None
+
+
+# Retrieves and returns the 404 image from filesystem (TODO: do as redirect instead)
+def not_found_image():
+    rel_path = 'storage/not-found.jpg'
+    abs_file_path = os.path.join(script_dir, rel_path)
+    fp = open(abs_file_path, 'r+')
     return fp
-# l1ll11l1l_opy_ the l11lll1ll_opy_
-if __name__ == l11ll_opy_ (u"ࠦࡤࡥ࡭ࡢ࡫ࡱࡣࡤࠨࢨ"):
-    app = web.application(l1l1l11ll_opy_, globals())
+
+
+# Run the API
+if __name__ == '__main__':
+    app = web.application(urls, globals())
+    app.add_processor(web.loadhook(cursor_db))
+    app.add_processor(web.unloadhook(close_db))
     app.run()
