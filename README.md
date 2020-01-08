@@ -126,6 +126,24 @@ validation: greater than 0
 
 ###### Response
 
+JSON array including
+
+- "parcel_area_sqm" |
+description: Total area of the property's parcel, in square meters |
+type: float
+
+- "building_area_sqm" |
+description: Total area of buildings inside the property's parcel, in square meters |
+type: float
+
+- "building_distances_m" |
+description: Array of [distance, from the centroid of the property, to the centroid of each building, in meters] |
+type: List[float]
+
+- "zone_density" |
+description: Array of [density of each building's area as a ratio to parcel area, dimensionless] |
+type: List[float]
+
 
 ## Submission instructions
 
