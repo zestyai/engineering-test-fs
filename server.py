@@ -28,6 +28,12 @@ class Display:
     def __init__(self):
         pass
 
+    def OPTIONS(self):
+        raise web.NoContent(headers={'Access-Control-Allow-Origin': '*',
+                                     'Access-Control-Allow-Headers': '*',
+                                     'Access-Control-Allow-Methods': '*'}
+                            )
+
     def GET(self, id):
         # Read query parameters
         data = web.input()
@@ -75,6 +81,12 @@ class Find:
     def __init__(self):
         pass
 
+    def OPTIONS(self):
+        raise web.NoContent(headers={'Access-Control-Allow-Origin': '*',
+                                     'Access-Control-Allow-Headers': '*',
+                                     'Access-Control-Allow-Methods': '*'}
+                            )
+
     def POST(self):
         # Read POST body as JSON (TODO: validate Content-Type is correct first)
         data = geojson.loads(web.data())
@@ -98,6 +110,12 @@ class Find:
 class Statistics:
     def __init__(self):
         pass
+
+    def OPTIONS(self):
+        raise web.NoContent(headers={'Access-Control-Allow-Origin': '*',
+                                     'Access-Control-Allow-Headers': '*',
+                                     'Access-Control-Allow-Methods': '*'}
+                            )
 
     def GET(self, id):
         # Read query parameters
