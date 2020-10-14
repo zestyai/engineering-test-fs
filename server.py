@@ -127,7 +127,7 @@ class Statistics:
 
         distance = 0
         if 'distance' in data and int(data['distance']) > 0:
-            distance = data['distance']
+            distance = int(data['distance'])
 
         # Fetch total parcel area
         query_db("""
